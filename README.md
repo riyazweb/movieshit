@@ -1,69 +1,66 @@
-# Welcome to your Lovable project
+```markdown
+# 🎬 Movieshit
 
-## Project info
+![TypeScript](https://img.shields.io/badge/TypeScript-98.6%25-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**URL**: https://lovable.dev/projects/c4689047-a449-4d2e-ab1a-5a46470cc86f
+## 📖 Description
 
-## How can I edit this code?
+Welcome to **Movieshit**! This is a fun and easy-to-use movie application built with **TypeScript**. 🍿 Whether you love watching movies or enjoy coding, this project is perfect for you!
 
-There are several ways of editing your application.
+## 🚀 Features
 
-**Use Lovable**
+- **Browse Movies**: Explore a wide variety of movies.
+- **Search**: Find movies by title, genre, or actor. 🔍
+- **Rate & Review**: Share your thoughts and ratings. ⭐
+- **Responsive Design**: Looks great on all devices! 📱💻
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c4689047-a449-4d2e-ab1a-5a46470cc86f) and start prompting.
+## 🛠️ Installation
 
-Changes made via Lovable will be committed automatically to this repo.
+1. **Clone the repository:**
 
-**Use your preferred IDE**
+   ```bash
+   git clone https://github.com/riyazweb/movieshit.git
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+2. **Navigate to the project directory:**
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+   ```bash
+   cd movieshit
+   ```
 
-Follow these steps:
+3. **Install dependencies:**
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+   ```bash
+   npm install
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 🎉 Usage
 
-# Step 3: Install the necessary dependencies.
-npm i
+1. **Start the development server:**
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+   ```bash
+   npm start
+   ```
+
+2. **Open your browser and go to:**
+
+   ```
+   http://localhost:3000
+   ```
+
+3. **Enjoy exploring movies!** 🍿
+
+## 🤝 Contributing
+
+We welcome contributions! If you'd like to help or have ideas, please open an issue or submit a pull request. Let's make Movieshit better together! 💪
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE). Feel free to use and modify it as you like!
+
+## 📫 Contact
+
+Have questions or feedback? Reach out to us at [your-email@example.com](mailto:your-email@example.com). We'd love to hear from you! 📬
+
 ```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/c4689047-a449-4d2e-ab1a-5a46470cc86f) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
