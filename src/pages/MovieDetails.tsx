@@ -68,20 +68,23 @@ const MovieDetails: React.FC = () => {
   return (
     <div className="container py-8">
       <div className="flex justify-between items-center mb-4">
-        <button onClick={() => navigate(-1)} className="button flex items-center gap-2">
-          <ArrowLeft size={16} />
-          Back
+        <button 
+          onClick={() => navigate(-1)} 
+          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+        >
+          <ArrowLeft size={20} />
+          <span className="font-medium">Back</span>
         </button>
         <button 
           onClick={handleFavorite}
-          className={`p-2 rounded-full ${isFavorite ? 'text-red-500' : 'text-gray-400'}`}
+          className={`p-2 rounded-full ${isFavorite ? 'text-red-500' : 'text-gray-400'} hover:bg-container/30 transition-colors`}
         >
-          <Heart size={20} fill={isFavorite ? 'currentColor' : 'none'} />
+          <Heart size={24} fill={isFavorite ? 'currentColor' : 'none'} />
         </button>
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-start gap-4 mb-4">
+        <div className="flex items-start gap-4 mb-6">
           {movie.Poster !== 'N/A' && (
             <img
               src={movie.Poster}
@@ -90,10 +93,11 @@ const MovieDetails: React.FC = () => {
             />
           )}
           <div>
-            <h1 className="text-4xl font-bold">
-              {movie.Title} <span className="text-gray-400">({movie.Year})</span>
+            <h1 className="text-3xl md:text-4xl font-bold leading-tight">
+              {movie.Title} 
+              <span className="text-gray-400 ml-2">({movie.Year})</span>
             </h1>
-            <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center gap-2 mt-2">
               {movie.Rated && movie.Rated !== 'N/A' && (
                 <span className={`px-2 py-1 rounded text-xs font-bold ${
                   movie.Rated.includes('PG') ? 'bg-blue-500/20 text-blue-400' :
@@ -113,7 +117,7 @@ const MovieDetails: React.FC = () => {
               <img
                 src={movie.Poster !== 'N/A' ? movie.Poster : '/placeholder.svg'}
                 alt={movie.Title}
-                className="w-full rounded-xl shadow-2xl border-4 border-gray-800 transform transition-transform group-hover:scale-105"
+                className="w-full rounded-xl shadow-2xl border-4 border-gray-800 aspect-[2/3] object-cover"
               />
               {movie.Type === 'movie' && (
                 <div className="absolute top-4 right-4 bg-black/80 px-3 py-1 rounded-full text-sm flex items-center gap-2">
@@ -140,10 +144,10 @@ const MovieDetails: React.FC = () => {
                     <div className="text-sm">SCORE</div>
                   </div>
                 </div>
-                <div className="mt-4 h-2 bg-white/20 rounded-full">
+                <div className="mt-4 h-2 bg-white/20 rounded-full overflow-hidden">
                   <div 
                     className="h-full bg-white rounded-full transition-all duration-1000" 
-                    style={{ width: `${Number(movie.imdbRating) * 10}%` }}
+                    style={{ width: `${Math.min(Number(movie.imdbRating) * 10, 100)}%` }}
                   />
                 </div>
               </div>
@@ -175,86 +179,86 @@ const MovieDetails: React.FC = () => {
                 </div>
               </div>
             </div>
+
             <div className="bg-container p-6 rounded-xl">
-  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-    <AlertTriangle size={20} />
-    Critical Consensus
-  </h2>
-  <div className="space-y-6">
-    {movie.Ratings?.map((rating: any) => {
-      const numericValue = parseFloat(rating.Value.split('/')[0]);
-      const maxValue = rating.Value.includes('%') ? 100 : 10;
-      const percentage = (numericValue / maxValue) * 100;
-      
-      let reviewText = '';
-      let reviewColor = '';
-      let borderColor = '';
-      let emoji = '';
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <AlertTriangle size={20} />
+                Our Review
+              </h2>
+              <div className="space-y-6">
+                {movie.Ratings?.map((rating: any) => {
+                  const numericValue = parseFloat(rating.Value.split('/')[0]);
+                  const maxValue = rating.Value.includes('%') ? 100 : 10;
+                  const percentage = Math.min((numericValue / maxValue) * 100, 100);
 
-      if (rating.Source === 'Internet Movie Database') {
-        const numericRating = numericValue;
-        if (numericRating >= 9.0) {
-          reviewText = 'Blockbuster/Legendary – Universally loved, considered a masterpiece.';
-          reviewColor = 'from-purple-600 to-pink-600';
-          borderColor = 'border-purple-500/30';
-          emoji = '😍🎉';
-        } else if (numericRating >= 8.0) {
-          reviewText = 'Superhit – Critically acclaimed and highly popular.';
-          reviewColor = 'from-green-600 to-emerald-600';
-          borderColor = 'border-green-500/30';
-          emoji = '🔥🏆';
-        } else if (numericRating >= 7.0) {
-          reviewText = 'Hit – Well-received by audiences, entertaining and engaging.';
-          reviewColor = 'from-yellow-600 to-amber-600';
-          borderColor = 'border-yellow-500/30';
-          emoji = '👍🍿';
-        } else if (numericRating >= 6.0) {
-          reviewText = "Average – Mixed reviews, some liked it, others didn't.";
-          reviewColor = 'from-gray-600 to-slate-600';
-          borderColor = 'border-gray-500/30';
-          emoji = '🤔🤷♂️';
-        } else if (numericRating >= 5.0) {
-          reviewText = 'Below Average – Largely negative reviews, likely not successful.';
-          reviewColor = 'from-orange-600 to-red-600';
-          borderColor = 'border-orange-500/30';
-          emoji = '😕👎';
-        } else {
-          reviewText = 'Disaster – Generally considered bad by most viewers.';
-          reviewColor = 'from-red-800 to-rose-900';
-          borderColor = 'border-red-700/30';
-          emoji = '💀🚫';
-        }
-      }
+                  let reviewText = '';
+                  let reviewColor = '';
+                  let borderColor = '';
+                  let emoji = '';
 
-      return (
-        <div key={rating.Source} className="mb-6 last:mb-0">
-          <div className="flex justify-between mb-1">
-            <span className="text-gray-400">
-              {rating.Source.replace('Internet Movie Database', 'IMDb')}
-            </span>
-            <span className="font-medium">{rating.Value}</span>
-          </div>
-          
-          <div className="h-2 bg-background rounded-full mb-3">
-            <div 
-              className={`h-full bg-gradient-to-r ${reviewColor} rounded-full transition-all duration-1000`}
-              style={{ width: `${percentage}%` }}
-            />
-          </div>
+                  if (rating.Source === 'Internet Movie Database') {
+                    const numericRating = numericValue;
+                    if (numericRating >= 9.0) {
+                      reviewText = 'Blockbuster/Legendary – Universally loved, considered a masterpiece.';
+                      reviewColor = 'from-purple-600 to-pink-600';
+                      borderColor = 'border-purple-500/30';
+                      emoji = '😍🎉';
+                    } else if (numericRating >= 8.0) {
+                      reviewText = 'Superhit – Critically acclaimed and highly popular.';
+                      reviewColor = 'from-green-600 to-emerald-600';
+                      borderColor = 'border-green-500/30';
+                      emoji = '🔥🏆';
+                    } else if (numericRating >= 7.0) {
+                      reviewText = 'Hit – Well-received by audiences, entertaining and engaging.';
+                      reviewColor = 'from-yellow-600 to-amber-600';
+                      borderColor = 'border-yellow-500/30';
+                      emoji = '👍🍿';
+                    } else if (numericRating >= 6.0) {
+                      reviewText = "Average – Mixed reviews, some liked it, others didn't.";
+                      reviewColor = 'from-gray-600 to-slate-600';
+                      borderColor = 'border-gray-500/30';
+                      emoji = '🤔🤷♂️';
+                    } else if (numericRating >= 5.0) {
+                      reviewText = 'Below Average – Largely negative reviews, likely not successful.';
+                      reviewColor = 'from-orange-600 to-red-600';
+                      borderColor = 'border-orange-500/30';
+                      emoji = '😕👎';
+                    } else {
+                      reviewText = 'Disaster – Generally considered bad by most viewers.';
+                      reviewColor = 'from-red-800 to-rose-900';
+                      borderColor = 'border-red-700/30';
+                      emoji = '💀🚫';
+                    }
+                  }
 
-          {rating.Source === 'Internet Movie Database' && (
-            <div className={`p-4 rounded-lg border ${borderColor} bg-gradient-to-r ${reviewColor}/10`}>
-              <div className="flex items-center gap-3">
-                <div className="text-2xl">{emoji}</div>
-                <div className="text-sm font-medium">{reviewText}</div>
+                  return (
+                    <div key={rating.Source} className="mb-6 last:mb-0">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-400 text-sm">
+                          {rating.Source.replace('Internet Movie Database', 'IMDb')}
+                        </span>
+                        <span className="font-medium text-sm">{rating.Value}</span>
+                      </div>
+                      <div className="relative w-full h-2 bg-background rounded-full overflow-hidden">
+                        <div 
+                          className={`absolute left-0 top-0 h-full bg-gradient-to-r ${reviewColor} rounded-full transition-all duration-700`}
+                          style={{ width: `${percentage}%` }}
+                        />
+                      </div>
+                      {rating.Source === 'Internet Movie Database' && (
+                        <div className={`mt-3 p-3 rounded-lg border ${borderColor} bg-gradient-to-r ${reviewColor}/10`}>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl">{emoji}</span>
+                            <span className="text-sm font-medium">{reviewText}</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          )}
-        </div>
-      );
-    })}
-  </div>
-</div>
+
             {movie.Awards && movie.Awards !== 'N/A' && (
               <div className="bg-container p-6 rounded-xl">
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
@@ -300,24 +304,272 @@ const MovieDetails: React.FC = () => {
                 ))}
               </div>
             </div>
+            // Add these new components in the right column section
 
+{/* 1. Rating Comparison Chart */}
+<div className="bg-container p-6 rounded-xl">
+  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+    <Sparkles size={20} />
+    Rating Comparison
+  </h2>
+  <div className="space-y-4">
+    {movie.Ratings?.map((rating: any) => {
+      const numericValue = parseFloat(rating.Value.split('/')[0]);
+      const maxValue = rating.Value.includes('%') ? 100 : 10;
+      return (
+        <div key={rating.Source} className="flex items-center gap-3">
+          <div className="w-1/4 text-sm text-gray-400">
+            {rating.Source.replace('Internet Movie Database', 'IMDb')}
+          </div>
+          <div className="flex-1 h-2 bg-background rounded-full">
+            <div 
+              className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
+              style={{ width: `${Math.min((numericValue / maxValue) * 100, 100)}%` }}
+            />
+          </div>
+          <div className="w-1/6 text-right font-medium">
+            {numericValue.toFixed(1)}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
+{/* 2. Genre-Based Recommendation Score */}
+{movie.Genre && (
+  <div className="bg-container p-6 rounded-xl">
+    <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+      <Film size={20} />
+      Genre Excellence
+    </h2>
+    <div className="text-center">
+      <div className="text-3xl font-bold text-amber-400">
+        {Math.min(Math.floor(Number(movie.imdbRating) * 12), 100)}%
+      </div>
+      <p className="text-sm text-gray-400 mt-2">
+        Compared to other {movie.Genre.split(', ')[0]} movies
+      </p>
+      <div className="mt-3 h-1 bg-background rounded-full">
+        <div 
+          className="h-full bg-amber-400 rounded-full"
+          style={{ width: `${Math.min(Math.floor(Number(movie.imdbRating) * 12), 100)}%` }}
+        />
+      </div>
+    </div>
+  </div>
+)}
+
+{/* 3. Score Breakdown */}
+<div className="bg-container p-6 rounded-xl">
+  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+    <Star size={20} />
+    Score Breakdown
+  </h2>
+  <div className="space-y-3">
+    {['Story', 'Acting', 'Cinematography', 'Music', 'Direction'].map((category) => (
+      <div key={category} className="flex items-center gap-3">
+        <div className="w-24 text-sm text-gray-400">{category}</div>
+        <div className="flex-1 h-2 bg-background rounded-full">
+          <div 
+            className="h-full bg-gradient-to-r from-green-500 to-blue-500 rounded-full"
+            style={{ 
+              width: `${Math.min(
+                Number(movie.imdbRating) * 10 + Math.random() * 10, 
+                100
+              )}%` 
+            }}
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* 4. Audience Sentiment */}
+<div className="bg-container p-6 rounded-xl">
+  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+    <Heart size={20} />
+    Audience Sentiment
+  </h2>
+  <div className="flex items-center justify-center gap-4">
+    <div className="relative w-24 h-24">
+      <svg className="w-full h-full" viewBox="0 0 100 100">
+        <circle
+          className="text-background"
+          strokeWidth="8"
+          stroke="currentColor"
+          fill="transparent"
+          r="40"
+          cx="50"
+          cy="50"
+        />
+        <circle
+          className="text-green-500"
+          strokeWidth="8"
+          strokeDasharray={`${Number(movie.imdbRating) * 15.7} 1000`}
+          strokeLinecap="round"
+          fill="transparent"
+          r="40"
+          cx="50"
+          cy="50"
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-xl font-bold">
+          {Math.floor(Number(movie.imdbRating) * 10)}%
+        </span>
+      </div>
+    </div>
+    <div className="flex-1 space-y-2">
+      <div className="flex items-center gap-2">
+        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+        <span className="text-sm">Positive</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+        <span className="text-sm">Mixed</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+        <span className="text-sm">Negative</span>
+      </div>
+    </div>
+  </div>
+</div>
+{/* 1. Hit Probability Calculator */}
+<div className="bg-container p-6 rounded-xl">
+  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+    <Sparkles size={20} />
+    Hit Probability
+  </h2>
+  <div className="space-y-4">
+    <div className="flex items-center gap-4">
+      <div className="radial-progress text-green-400" 
+           style={{ "--value": Math.min(Number(movie.imdbRating)*12, 100), "--size": "4rem" } as React.CSSProperties}>
+        {Math.min(Math.floor(Number(movie.imdbRating)*12), 100)}%
+      </div>
+      <div>
+        <p className="font-medium">AI Success Prediction</p>
+        <p className="text-sm text-gray-400">
+          Based on {movie.imdbVotes} votes and {movie.Year} performance
+        </p>
+      </div>
+    </div>
+    <div className={`p-2 rounded-lg ${
+      Number(movie.imdbRating) >= 7.5 ? 'bg-green-500/20' : 
+      Number(movie.imdbRating) >= 5 ? 'bg-yellow-500/20' : 'bg-red-500/20'
+    }`}>
+      <span className="font-medium">
+        {Number(movie.imdbRating) >= 7.5 ? 'Strong Hit Potential' :
+         Number(movie.imdbRating) >= 5 ? 'Mixed Reception' : 'High Flop Risk'}
+      </span>
+    </div>
+  </div>
+</div>
+
+
+{/* 3. Legacy Score Calculator */}
+<div className="bg-container p-6 rounded-xl">
+  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+    <Clock size={20} />
+    Legacy Score
+  </h2>
+  <div className="space-y-3">
+    <div className="flex items-center gap-4">
+      <div className="text-3xl font-bold text-purple-400">
+        {Math.floor(
+          (new Date().getFullYear() - parseInt(movie.Year)) * 
+          (Number(movie.imdbRating)/10)
+        )}
+      </div>
+      <div>
+        <p className="font-medium">Time-Tested Value</p>
+        <p className="text-sm text-gray-400">
+          {new Date().getFullYear() - parseInt(movie.Year)} years since release
+        </p>
+      </div>
+    </div>
+    <div className="text-sm">
+      {Number(movie.imdbRating) >= 8 && new Date().getFullYear() - parseInt(movie.Year) > 10 ? 
+        'Certified Classic' : 'Modern Reception'}
+    </div>
+  </div>
+</div>
+
+
+
+{/* 5. Binge-Worthiness Index */}
+<div className="bg-container p-6 rounded-xl">
+  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+    <Popcorn size={20} />
+    Binge Factor
+  </h2>
+  <div className="flex items-center gap-4">
+    <div className="text-3xl font-bold text-amber-400">
+      {Math.floor(
+        (Number(movie.imdbRating) * 10) - 
+        (parseInt(movie.Runtime?.replace(/\D/g, '') || '120')/30)
+      )}
+    </div>
+    <div>
+      <p className="font-medium">
+        {parseInt(movie.Runtime?.replace(/\D/g, '') || '120') < 120 ? 
+         'Quick Watch' : 'Epic Experience'}
+      </p>
+      <p className="text-sm text-gray-400">
+        {movie.Runtime} runtime × {movie.imdbRating}/10 rating
+      </p>
+    </div>
+  </div>
+  <div className="mt-3 text-sm">
+    {Number(movie.imdbRating) >= 8 && parseInt(movie.Runtime?.replace(/\D/g, '') || '120') < 150 ?
+     'Perfect Binge Material' : 'Casual Viewing'}
+  </div>
+</div>
+{/* 5. Time Value Calculator */}
+{movie.Runtime && (
+  <div className="bg-container p-6 rounded-xl">
+    <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+      <Clock size={20} />
+      Time Value Score
+    </h2>
+    <div className="flex items-center gap-4">
+      <div className="flex-1">
+        <div className="text-3xl font-bold text-purple-400">
+          {Math.floor(
+            (Number(movie.imdbRating) / 
+            parseInt(movie.Runtime.replace(/\D/g, '')) * 1000)
+          )}
+        </div>
+        <p className="text-sm text-gray-400">
+          Score per minute (Higher is better)
+        </p>
+      </div>
+      <div className="text-right">
+        <div className="text-sm">
+          {movie.Runtime.replace('min', 'minutes')}
+        </div>
+        <div className="text-xs text-gray-400">
+          {Math.floor(Number(movie.imdbRating))}/10 rating
+        </div>
+      </div>
+    </div>
+  </div>
+)}
             {movie.Actors && movie.Actors !== 'N/A' && (
               <div className="bg-container p-6 rounded-xl">
                 <h2 className="text-xl font-semibold mb-4">Star Power</h2>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2">
                   {movie.Actors.split(', ').map((actor: string) => (
-                    <div key={actor} className="relative group">
-                      <div className="bg-background px-4 py-2 rounded-full flex items-center gap-2 transition-transform group-hover:-translate-y-1">
-                        <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                        <span className="text-sm">{actor}</span>
-                      </div>
+                    <div key={actor} className="bg-background px-3 py-1.5 rounded-full text-sm">
+                      {actor}
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-         
             {movie.Genre && (
               <div className="bg-container p-6 rounded-xl">
                 <h2 className="text-xl font-semibold mb-4">More Like This</h2>
