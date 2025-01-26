@@ -3,20 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import SearchBar from "../components/SearchBar";
 import MovieGrid from "../components/MovieGrid";
 import { toast } from "sonner";
-import React from 'react';
 
 const OMDB_API_KEY = "8ec42cd3";
-
-// Function to get movie rating categories
-const getRatingCategory = (rating: string) => {
-  const numRating = parseFloat(rating);
-  if (numRating >= 9.0) return "Blockbuster/Legendary";
-  if (numRating >= 8.0) return "Superhit";
-  if (numRating >= 7.0) return "Hit";
-  if (numRating >= 6.0) return "Average/Above Average";
-  if (numRating >= 5.0) return "Below Average";
-  return "Not Recommended";
-};
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,76 +17,96 @@ const Index = () => {
         `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${searchQuery}`
       );
       const data = await response.json();
-      console.log("OMDB API Response:", data);
-
-      const fetchMovieByID = async (imdbID: string) => {
-        try {
-          const response = await fetch(
-            `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${imdbID}`
-          );
-          const data = await response.json();
-          console.log("OMDB API Response for IMDb ID:", data);
-        } catch (error) {
-          console.error("Error fetching movie data:", error);
-        }
-      };
-
-      fetchMovieByID("tt27957740");
-
-      if (data.Error) {
-        throw new Error(data.Error);
-      }
+      if (data.Error) throw new Error(data.Error);
       return data;
     },
     enabled: !!searchQuery,
   });
 
-  const formatMoviesForGrid = (movies: any[]) => {
-    if (!movies) return [];
-    return movies
-      .filter(movie => movie.Poster !== "N/A" && movie.Title && movie.Year)
-      .map(movie => ({
-        imdbID: movie.imdbID,
-        Title: movie.Title,
-        Year: movie.Year,
-        Poster: movie.Poster,
-        imdbRating: movie.imdbRating,
-      }));
-  };
-
   return (
-    <div className="container py-8">
-      <h1 className="text-6xl font-bold text-center mb-12 text-white">
-        Movie Discovery
-      </h1>
-      <SearchBar onSearch={setSearchQuery} />
-      
-      {searchQuery ? (
-        <MovieGrid movies={searchResults?.Search || []} loading={searchLoading} />
-      ) : (
-        <div className="space-y-16">
-          <section className="mt-16 bg-container/50 p-8 rounded-xl">
-            <h2 className="text-3xl font-semibold mb-6 text-center">Our Rating System</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="p-4 bg-container rounded-lg">
-                <div className="text-yellow-500 text-xl mb-2">9.0+</div>
-                <div className="font-semibold">Blockbuster/Legendary</div>
-                <p className="text-sm text-gray-400">Universally loved masterpiece</p>
+    <div className="min-h-screen bg-black px-4 pb-40 sm:pb-8 overflow-x-hidden">
+      <div className="mx-auto max-w-4xl">
+        <h1 className="mb-6 text-center text-4xl font-bold text-white sm:mb-12 sm:text-6xl">
+          🎬 Movie Discovery
+        </h1>
+
+        <div className="mb-8 sm:mb-16">
+          {searchQuery ? (
+            <MovieGrid 
+              movies={searchResults?.Search || []} 
+              loading={searchLoading}
+            />
+          ) : (
+            <section className="mx-auto w-full">
+              <h2 className="mb-8 text-center text-3xl font-bold text-white sm:mb-12 sm:text-4xl">
+                📈 Rating System
+              </h2>
+              
+              <div className="grid w-full grid-cols-1 gap-3 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {[
+                  { 
+                    emoji: "🏆",
+                    range: "9.0+", 
+                    title: "Blockbuster", 
+                    desc: "Cinematic masterpiece" 
+                  },
+                  { 
+                    emoji: "⭐",
+                    range: "8.0-8.9", 
+                    title: "Superhit", 
+                    desc: "Critically acclaimed" 
+                  },
+                  { 
+                    emoji: "🎬",
+                    range: "7.0-7.9", 
+                    title: "Hit", 
+                    desc: "Audience favorite" 
+                  },
+                  { 
+                    emoji: "🎭",
+                    range: "6.0-6.9", 
+                    title: "Average/Above", 
+                    desc: "Mixed reactions" 
+                  },
+                  { 
+                    emoji: "😐",
+                    range: "5.0-5.9", 
+                    title: "Below Average", 
+                    desc: "Disappointing" 
+                  },
+                  { 
+                    emoji: "💣",
+                    range: "Below 5.0", 
+                    title: "Not Recommended", 
+                    desc: "Critical failure" 
+                  },
+                ].map((rating) => (
+                  <div 
+                    key={rating.title}
+                    className="w-full min-w-0 rounded-xl bg-white p-4 shadow-xl sm:p-6"
+                  >
+                    <div className="mb-2 text-6xl sm:text-7xl">{rating.emoji}</div>
+                    <div className="mb-1 text-2xl font-black text-black sm:text-3xl">
+                      {rating.range}
+                    </div>
+                    <div className="mb-1 text-3xl font-bold text-black sm:text-4xl">
+                      {rating.title}
+                    </div>
+                    <div className="text-lg text-gray-600 sm:text-xl">{rating.desc}</div>
+                  </div>
+                ))}
               </div>
-              <div className="p-4 bg-container rounded-lg">
-                <div className="text-yellow-500 text-xl mb-2">8.0-8.9</div>
-                <div className="font-semibold">Superhit</div>
-                <p className="text-sm text-gray-400">Critically acclaimed</p>
-              </div>
-              <div className="p-4 bg-container rounded-lg">
-                <div className="text-yellow-500 text-xl mb-2">7.0-7.9</div>
-                <div className="font-semibold">Hit</div>
-                <p className="text-sm text-gray-400">Well-received by audiences</p>
-              </div>
-            </div>
-          </section>
+            </section>
+          )}
         </div>
-      )}
+
+        {/* Fixed Search Container - Moved Down */}
+        <div className="fixed bottom-0 left-0 right-0 bg-black p-4 pb-6 sm:static sm:bg-transparent sm:p-0">
+          <div className="mx-auto max-w-2xl">
+            <SearchBar onSearch={setSearchQuery} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
