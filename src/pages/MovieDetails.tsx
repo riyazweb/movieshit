@@ -304,8 +304,7 @@ const MovieDetails: React.FC = () => {
                 ))}
               </div>
             </div>
-            // Add these new components in the right column section
-
+   
 {/* 1. Rating Comparison Chart */}
 <div className="bg-container p-6 rounded-xl">
   <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
