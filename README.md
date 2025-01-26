@@ -2,8 +2,7 @@ Here is the full markdown text for easy copying:
 
 # 🎬 Movieshit
 
-![TypeScript](https://img.shields.io/badge/TypeScript-98.6%25-blue.svg)  
-![License](https://img.shields.io/badge/license-MIT-green.svg)  
+![WhatsApp Image 2025-01-26 at 15 11 26_fd11e6c1](https://github.com/user-attachments/assets/b2742d4f-23e3-453e-a8bf-03c23c7ab2fa)
 
 ## 📖 Description  
 
